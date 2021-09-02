@@ -25,19 +25,20 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   const { name } = req.body
-  if (name.trim() !== '' && name) {
-    next()
-  } else {
-    next({
-      message: "missing required name field",
-      status: 400
+  if (!name || !name.trim()) {
+    res.status(400).json({
+      message: "missing required name field"
     })
+  } else {
+    req.name = name.trim()
+    next()
   }
 }
 
 function validatePost(req, res, next) {
   const { text } = req.body
   if (text) {
+    req.text = text
     next()
   } else {
     next({
